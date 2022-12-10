@@ -1,0 +1,8 @@
+config:
+  gcp:project: pingall
+  gcp:region: us-central1
+  pingall:appPath: app
+  pingall:concurrency: "50"
+  pingall:containerPort: "8080"
+  pingall:cpu: "1"
+  pingall:memory: 1Gi
