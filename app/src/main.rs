@@ -36,6 +36,5 @@ fn port() -> u16 {
 #[tokio::main]
 async fn main() {
     let hello = warp::any().map(|| format!("Hello, Rhys!"));
-
-    warp::serve(hello).run(([127, 0, 0, 1], port())).await;
+    warp::serve(hello).run(([0, 0, 0, 0], port())).await;
 }

@@ -4,3 +4,5 @@ runtime:
     name: python
     options:
         virtualenv: venv
+backend:
+  url: gs://pingall-pulumi-state

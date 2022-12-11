@@ -2,11 +2,11 @@ import pulumi
 import pulumi_azure_native as azure_native
 
 
-class Azure:
+class Deployer:
     @staticmethod
     def list_locations() -> list[str]:
         # TODO: Get This from the API
-        azure_regions = [
+        return [
             "australiaeast",
             "australiasoutheast",
             "brazilsouth",

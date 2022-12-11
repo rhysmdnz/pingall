@@ -1,4 +1,7 @@
+secretsprovider: gcpkms://projects/pingall/locations/australia-southeast1/keyRings/pulumiCrypto/cryptoKeys/secrets
+encryptedkey: CiQAM0zvZr0YWicP7Cew3q0UjZuVv8B4bJsNA14TdAzlW9/nsLgSSQAJLMYJWaHuHUiRgDvQNZJsTh29ni0yWFwX5f9cYN+aI3Ib9cdm2/fWtzBrG2u9SJtpOHV1RvIoJXc9VIPMWoSZhrzcMIZPhys=
 config:
+  azure-native:location: centralus
   gcp:project: pingall
   gcp:region: us-central1
   pingall:appPath: app
@@ -6,4 +9,3 @@ config:
   pingall:containerPort: "8080"
   pingall:cpu: "1"
   pingall:memory: 1Gi
-  azure-native:location: "centralus"
