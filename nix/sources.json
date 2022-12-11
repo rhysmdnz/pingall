@@ -1,0 +1,38 @@
+{
+    "nixpkgs": {
+        "branch": "nixos-unstable",
+        "description": "Nix Packages collection",
+        "homepage": "",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "2dea0f4c2d6e4603f54b2c56c22367e77869490c",
+        "sha256": "1sazdjffsjhg4qcvx18bymd8hkfiq8mpzfd23cx6xnwjzps7fkzy",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/2dea0f4c2d6e4603f54b2c56c22367e77869490c.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nocargo": {
+        "branch": "main",
+        "description": "[alpha] Build Rust crates with Nix Build System.",
+        "homepage": "",
+        "owner": "oxalica",
+        "repo": "nocargo",
+        "rev": "71a18547530901ea0ad10e33482c2cec35b22d80",
+        "sha256": "1ki42mnl4v2a7czgv02nl2g6myrvmbbhgj9rwfb5ibh16y5bkvx2",
+        "type": "tarball",
+        "url": "https://github.com/oxalica/nocargo/archive/71a18547530901ea0ad10e33482c2cec35b22d80.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "registry-crates-io": {
+        "branch": "master",
+        "description": "Registry index for crates.io",
+        "homepage": "https://crates.io",
+        "owner": "rust-lang",
+        "repo": "crates.io-index",
+        "rev": "52e16042e2f2af346efca9385dd44108ef956619",
+        "sha256": "170fyn3q2ww4vpsp5ksvzizsv4i38k2qiwl14jj5ry9bbc5jhnjm",
+        "type": "tarball",
+        "url": "https://github.com/rust-lang/crates.io-index/archive/52e16042e2f2af346efca9385dd44108ef956619.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}
