@@ -34,5 +34,17 @@
         "type": "tarball",
         "url": "https://github.com/rust-lang/crates.io-index/archive/52e16042e2f2af346efca9385dd44108ef956619.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "schemastore": {
+        "branch": "master",
+        "description": "A collection of JSON schema files including full API",
+        "homepage": "http://schemastore.org",
+        "owner": "SchemaStore",
+        "repo": "schemastore",
+        "rev": "d028d3a7472eced188bd2fa46e9a4344b35e02c7",
+        "sha256": "1dkh1qyhswn86q34gf009lb2z5kbifpb6nc0hpi8xc88yfl4hk4p",
+        "type": "tarball",
+        "url": "https://github.com/SchemaStore/schemastore/archive/d028d3a7472eced188bd2fa46e9a4344b35e02c7.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
