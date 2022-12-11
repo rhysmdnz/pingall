@@ -2,6 +2,7 @@ import pulumi
 import pulumi_docker as docker
 from pulumi_gcp import cloudrun, config as gcp_config, serviceaccount
 import aiohttp
+from deps import nixdeps
 
 
 class Deployer:
@@ -25,7 +26,7 @@ class Deployer:
             "image",
             image_name=f"gcr.io/{project}/{image_name}",
             build=docker.DockerBuild(
-                context=app_path, env={"DOCKER_DEFAULT_PLATFORM": "linux/amd64"}
+                context=nixdeps["gcp.wrapperImageBuildDir"], env={"DOCKER_DEFAULT_PLATFORM": "linux/amd64"}
             ),
         )
 

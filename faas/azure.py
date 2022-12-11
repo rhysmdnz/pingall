@@ -1,5 +1,6 @@
 import pulumi
 import pulumi_azure_native as azure_native
+from deps import nixdeps
 
 
 class Deployer:
@@ -61,7 +62,7 @@ class Deployer:
             resource_group_name=self.resource_group.name,
             account_name=storage_account.name,
             container_name=code_container.name,
-            source=pulumi.asset.FileArchive("./azure-function"),
+            source=pulumi.asset.FileArchive(nixdeps["azure.archive"]),
         )
 
         storage_account_keys = azure_native.storage.list_storage_account_keys_output(
@@ -134,4 +135,4 @@ class Deployer:
                 ftps_state=azure_native.web.FtpsState.DISABLED,
             ),
         )
-        return app.default_host_name
+        return app.default_host_name.apply(lambda host: f"https://{host}/api/pinger")
