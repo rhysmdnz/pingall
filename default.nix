@@ -99,7 +99,6 @@ in
 
     ${pkgs.zip}/bin/zip -r $out *
     '';
-    # archive = pkgs.runCommandLocal "azure-pinger-archive" { inherit pinger; j
   };
 
 }
