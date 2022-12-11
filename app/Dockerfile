@@ -1,9 +1,12 @@
-FROM python:3.10-alpine
-WORKDIR /usr/src/app
-
-COPY requirements.txt ./
-RUN pip install -r requirements.txt
-
+FROM rust:1 as builder
+WORKDIR /app
 COPY . .
+ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
+RUN cargo install --path .
 
-CMD ["flask", "run", "--host=0.0.0.0"]
+
+FROM debian:stable-slim as runner
+COPY --from=builder /usr/local/cargo/bin/hello-rocket /usr/local/bin/hello-rocket
+ENV ROCKET_ADDRESS=0.0.0.0
+EXPOSE 8000
+CMD ["hello-rocket"]

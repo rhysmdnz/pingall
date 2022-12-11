@@ -6,3 +6,4 @@ config:
   pingall:containerPort: "8080"
   pingall:cpu: "1"
   pingall:memory: 1Gi
+  azure-native:location: "centralus"
