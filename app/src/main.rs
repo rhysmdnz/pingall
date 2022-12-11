@@ -7,18 +7,17 @@ enum Cloud {
     None,
 }
 
-#[inline(always)]
-fn cloud() -> Cloud {
-    match option_env!("PINGER_CLOUD") {
-        Some("gcp") => Cloud::GCP,
-        Some("azure") => Cloud::Azure,
-        Some(_) => panic!("bad PINGER_CLOUD"),
-        None => Cloud::None,
-    }
-}
+#[cfg(feature = "azure")]
+static CLOUD: Cloud = Cloud::Azure;
+
+#[cfg(feature = "gcp")]
+static CLOUD: Cloud = Cloud::GCP;
+
+#[cfg(not(any(feature = "gcp", feature = "azure")))]
+static CLOUD: Cloud = Cloud::GCP;
 
 fn port() -> u16 {
-    match cloud() {
+    match CLOUD {
         Cloud::GCP => env::var("PORT")
             .expect("no port")
             .parse()
