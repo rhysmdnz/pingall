@@ -33,19 +33,31 @@ in
 
   gcp = let pkgs = pkgs-x86_64-linux; in lib.recurseIntoAttrs rec {
     pinger = pkgs.callPackage nix/pinger.nix { cloud = "gcp"; };
-    image = pkgs.dockerTools.buildLayeredImage {
-      # namespaced to a domain we control, because otherwise dependency confusion on docker hub becomes a concern
-      name = "memes.nz/pinger-gcp";
-      # version the image with the hash of the pinger we're using.
-      tag = builtins.head (builtins.split "-" (lib.lists.last (builtins.split "/" pinger.outPath)));
-      # if additional contents are added, rethink the above versioning scheme.
-      contents = [ pinger ];
-      config = {
-        Cmd = [ "pinger" ];
-      };
-    };
+    image = pkgs.callPackage nix/image.nix { name = "memes.nz/pinger-gcp"; inherit pinger; };
     wrapperImageBuildDir = pkgs.writeTextDir "Dockerfile" "FROM ${image.imageName}:${image.imageTag}";
   };
+
+  aws = let pkgs = pkgs-x86_64-linux; in lib.recurseIntoAttrs rec {
+    pinger = pkgs.callPackage nix/pinger.nix { cloud = "aws"; };
+    staticProot = pkgs.pkgsStatic.proot;
+
+    bootstrap = pkgs.writeScript "bootstrap" ''#!/bin/sh
+    ./proot -b nix:/nix ${pinger}/bin/pinger'';
+
+    archive = pkgs.runCommandLocal "aws-pinger-archive.zip" {} ''
+    mkdir build
+    cd build
+    cp ${staticProot}/bin/proot ./proot
+    cp ${bootstrap} ./bootstrap
+
+    mkdir -p nix/store
+
+    <${pkgs.closureInfo {rootPaths = [ pinger ];}}/store-paths xargs -I{} cp -r {} ./nix/store
+
+    ${pkgs.zip}/bin/zip -r $out *
+    '';
+  };
+
 
   azure = let pkgs = pkgs-x86_64-linux; in lib.recurseIntoAttrs rec {
     pinger = pkgs.callPackage nix/pinger.nix { cloud = "azure"; };

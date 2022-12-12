@@ -3,7 +3,7 @@ import os
 import subprocess
 import pulumi
 
-depNames = ["azure.archive", "gcp.image", "gcp.wrapperImageBuildDir"]
+depNames = ["azure.archive", "gcp.image", "gcp.wrapperImageBuildDir", "aws.archive"]
 
 pulumi.info("Loading nix dependencies...")
 

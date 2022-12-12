@@ -1,6 +1,7 @@
 secretsprovider: gcpkms://projects/pingall/locations/australia-southeast1/keyRings/pulumiCrypto/cryptoKeys/secrets
 encryptedkey: CiQAM0zvZr0YWicP7Cew3q0UjZuVv8B4bJsNA14TdAzlW9/nsLgSSQAJLMYJWaHuHUiRgDvQNZJsTh29ni0yWFwX5f9cYN+aI3Ib9cdm2/fWtzBrG2u9SJtpOHV1RvIoJXc9VIPMWoSZhrzcMIZPhys=
 config:
+  aws:region: ap-southeast-2
   azure-native:location: centralus
   gcp:project: pingall
   gcp:region: us-central1
