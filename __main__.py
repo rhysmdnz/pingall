@@ -11,6 +11,6 @@ for provider in [gcp, azure, aws]:
     deployer = provider.Deployer()
     locations = deployer.list_locations()
 
-    results[provider.__name__] = {loc: deployer.make_function(loc) for loc in locations}
+    results[provider.__name__.split["."][-1]] = {loc: deployer.make_function(loc) for loc in locations}
 
 pulumi.export("urls", results)
