@@ -43,30 +43,47 @@ class Deployer:
     def __init__(self):
         self.resource_group = azure_native.resources.ResourceGroup("pingall")
 
-        self.storage_account = azure_native.storage.StorageAccount(
+        self.code_storage_account = azure_native.storage.StorageAccount(
             "pingallsa",
             resource_group_name=self.resource_group.name,
             sku=azure_native.storage.SkuArgs(
                 name=azure_native.storage.SkuName.STANDARD_LRS,
             ),
             kind=azure_native.storage.Kind.STORAGE_V2,
+            allow_blob_public_access=False,
+            # This is used by the pulumi provider to upload code so can't disable :(
+            allow_shared_key_access=True,
+            minimum_tls_version=azure_native.storage.MinimumTlsVersion.TLS1_2,
         )
 
         code_container = azure_native.storage.BlobContainer(
             "zips",
             resource_group_name=self.resource_group.name,
-            account_name=self.storage_account.name,
+            account_name=self.code_storage_account.name,
         )
 
         self.code_blob = azure_native.storage.Blob(
             "zip",
             resource_group_name=self.resource_group.name,
-            account_name=self.storage_account.name,
+            account_name=self.code_storage_account.name,
             container_name=code_container.name,
             source=pulumi.asset.FileArchive(nixdeps["azure.archive"]),
         )
 
     def make_function(self, location: str) -> pulumi.Output[str]:
+        app_storage = azure_native.storage.StorageAccount(
+            f"pingsa{location}",
+            account_name=f"pingsa{location}",
+            resource_group_name=self.resource_group.name,
+            sku=azure_native.storage.SkuArgs(
+                name=azure_native.storage.SkuName.STANDARD_LRS,
+            ),
+            kind=azure_native.storage.Kind.STORAGE_V2,
+            location=location,
+            allow_blob_public_access=False,
+            allow_shared_key_access=False,
+            minimum_tls_version=azure_native.storage.MinimumTlsVersion.TLS1_2,
+        )
         plan = azure_native.web.AppServicePlan(
             f"plan{location}",
             resource_group_name=self.resource_group.name,
@@ -98,7 +115,7 @@ class Deployer:
                     ),
                     azure_native.web.NameValuePairArgs(
                         name="AzureWebJobsStorage__accountName",
-                        value=self.storage_account.name,
+                        value=app_storage.name,
                     ),
                     azure_native.web.NameValuePairArgs(
                         name="WEBSITE_RUN_FROM_PACKAGE", value=self.code_blob.url
@@ -116,7 +133,7 @@ class Deployer:
             scope=pulumi.Output.format(
                 "subscriptions/2917da89-7d5e-48a5-aa1e-01f15223e9e8/resourceGroups/{0}/providers/Microsoft.Storage/storageAccounts/{1}",
                 self.resource_group.name,
-                self.storage_account.name,
+                self.code_storage_account.name,
             ),
         )
         azure_native.authorization.RoleAssignment(
@@ -127,7 +144,7 @@ class Deployer:
             scope=pulumi.Output.format(
                 "subscriptions/2917da89-7d5e-48a5-aa1e-01f15223e9e8/resourceGroups/{0}/providers/Microsoft.Storage/storageAccounts/{1}",
                 self.resource_group.name,
-                self.storage_account.name,
+                app_storage.name,
             ),
         )
         return app.default_host_name.apply(lambda host: f"https://{host}/api/pinger")

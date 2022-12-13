@@ -1,4 +1,4 @@
-use std::env;
+use std::{collections::HashMap, env};
 use warp::Filter;
 
 #[derive(Eq, PartialEq)]
@@ -41,10 +41,17 @@ fn port() -> u16 {
 
 #[tokio::main]
 async fn main() {
-    let hello = warp::any().map(|| format!("Hello, Slowness!"));
+    let hello = warp::any()
+        .and(warp::query::<HashMap<String, String>>())
+        .map(|p: HashMap<String, String>| match p.get("name") {
+            Some(name) => format!("Hello, {}!", name),
+            None => format!("Hello, World!"),
+        });
 
     #[cfg(feature = "aws")]
-    lambda_web::run_hyper_on_lambda(warp::service(hello)).await.unwrap();
+    lambda_web::run_hyper_on_lambda(warp::service(hello))
+        .await
+        .unwrap();
 
     #[cfg(not(feature = "aws"))]
     warp::serve(hello).run(([0, 0, 0, 0], port())).await;
