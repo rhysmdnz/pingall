@@ -1,4 +1,28 @@
 {
+    "fenix": {
+        "branch": "main",
+        "description": "Rust toolchains and rust analyzer nightly for nix [maintainer=@figsoda]",
+        "homepage": "",
+        "owner": "nix-community",
+        "repo": "fenix",
+        "rev": "5f4b3e24c25ee28dc766803e3e83912a8b5c3926",
+        "sha256": "1vy1rvrcxp78afnqszfvc5h1r8m3aympj2h8r2hq596cdw455d2w",
+        "type": "tarball",
+        "url": "https://github.com/nix-community/fenix/archive/5f4b3e24c25ee28dc766803e3e83912a8b5c3926.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "naersk": {
+        "branch": "master",
+        "description": "Build rust crates in Nix. No configuration, no code generation, no IFD. Sandbox friendly. [maintainer: @Patryk27]",
+        "homepage": "",
+        "owner": "nix-community",
+        "repo": "naersk",
+        "rev": "6944160c19cb591eb85bbf9b2f2768a935623ed3",
+        "sha256": "01i282zrx651mpvnmlgk4fgwg56nbr1yljpzcj5irqxf18cqx3gn",
+        "type": "tarball",
+        "url": "https://github.com/nix-community/naersk/archive/6944160c19cb591eb85bbf9b2f2768a935623ed3.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "nixpkgs": {
         "branch": "nixos-unstable",
         "description": "Nix Packages collection",

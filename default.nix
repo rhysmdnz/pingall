@@ -1,27 +1,29 @@
 let
   sources = import ./nix/sources.nix;
 
+  fenix = import sources.fenix { pkgs = pkgs-x86_64-linux; };
+
+  nativePkgs = import sources.nixpkgs nixpkgsOpts;
+  pkgs-x86_64-linux = import sources.nixpkgs (nixpkgsOpts // { system = "x86_64-linux"; });
+
+  toolchain = with fenix;
+    combine [
+      minimal.rustc
+      minimal.cargo
+      targets.x86_64-unknown-linux-musl.latest.rust-std
+    ];
+
+  naersk = pkgs-x86_64-linux.callPackage sources.naersk {
+    cargo = toolchain;
+    rustc = toolchain;
+  };
+
   nixpkgsOpts = { overlays = [
-    (import ./nix/nocargo.nix sources)
-    (self: super: { talloc =
-                      if super.targetPlatform.isStatic then
-                        super.talloc.overrideAttrs (x: {wafConfigureFlags = x.wafConfigureFlags ++ ["--disable-python"];})
-                      else super.talloc;
-                  } )
-    (self: super: { proot =
-                      if super.targetPlatform.isStatic then
-                        # proot's makefile uses an unprefixed pkg-config, help it along:
-                        (super.proot.override (_: { enablePython = false; })).overrideAttrs (x: {LDFLAGS = ["-ltalloc"];})
-                      else super.proot;
-                  } )
     (self: super: { writeJsonChecked = super.callPackage ./nix/json-schema.nix { inherit (sources) schemastore; }; })
   ]; };
 
-  nativePkgs = import sources.nixpkgs nixpkgsOpts;
   # lib is arch-independent; it speeds up pulumi-driven evals to do it this way since now they never need to evalulate the nativePkgs thunk
   lib = import "${sources.nixpkgs}/lib";
-
-  pkgs-x86_64-linux = import sources.nixpkgs (nixpkgsOpts // { system = "x86_64-linux"; });
 
   cloud = {
     gcp.pkgs = pkgs-x86_64-linux;
@@ -29,30 +31,18 @@ let
   };
 in
 {
-  pinger = nativePkgs.callPackage nix/pinger.nix {};
-
   gcp = let pkgs = pkgs-x86_64-linux; in lib.recurseIntoAttrs rec {
-    pinger = pkgs.callPackage nix/pinger.nix { cloud = "gcp"; };
+    pinger = pkgs.callPackage nix/pinger.nix { cloud = "gcp"; inherit naersk; };
     image = pkgs.callPackage nix/image.nix { name = "memes.nz/pinger-gcp"; inherit pinger; };
     wrapperImageBuildDir = pkgs.writeTextDir "Dockerfile" "FROM ${image.imageName}:${image.imageTag}";
   };
 
   aws = let pkgs = pkgs-x86_64-linux; in lib.recurseIntoAttrs rec {
-    pinger = pkgs.callPackage nix/pinger.nix { cloud = "aws"; };
-    staticProot = pkgs.pkgsStatic.proot;
-
-    bootstrap = pkgs.writeScript "bootstrap" ''#!/bin/sh
-    ./proot -b nix:/nix ${pinger}/bin/pinger'';
-
+    pinger = pkgs.callPackage nix/pinger.nix { cloud = "aws"; inherit naersk; };
     archive = pkgs.runCommandLocal "aws-pinger-archive.zip" {} ''
     mkdir build
     cd build
-    cp ${staticProot}/bin/proot ./proot
-    cp ${bootstrap} ./bootstrap
-
-    mkdir -p nix/store
-
-    <${pkgs.closureInfo {rootPaths = [ pinger ];}}/store-paths xargs -I{} cp -r {} ./nix/store
+    cp ${pinger}/bin/pinger ./bootstrap
 
     ${pkgs.zip}/bin/zip -r $out *
     '';
@@ -60,8 +50,7 @@ in
 
 
   azure = let pkgs = pkgs-x86_64-linux; in lib.recurseIntoAttrs rec {
-    pinger = pkgs.callPackage nix/pinger.nix { cloud = "azure"; };
-    staticProot = pkgs.pkgsStatic.proot;
+    pinger = pkgs.callPackage nix/pinger.nix { cloud = "azure"; inherit naersk; };
 
     functionJson = pkgs.writeJsonChecked { name = "function.json"; content = {
       bindings = [
@@ -102,9 +91,9 @@ in
       };
       customHandler = {
         description = {
-          defaultExecutablePath = "proot";
+          defaultExecutablePath = "pinger/pinger";
           workingDirectory = "";
-          arguments = ["-b" "nix:/nix" "${pinger}/bin/pinger"];
+          arguments = [];
         };
         enableForwardingHttpRequest = true;
       };
@@ -113,14 +102,11 @@ in
     archive = pkgs.runCommandLocal "azure-pinger-archive.zip" {} ''
     mkdir build
     cd build
-    cp ${staticProot}/bin/proot ./proot
     cp ${hostJson} host.json
     mkdir pinger
     cp ${functionJson} pinger/function.json
 
-    mkdir -p nix/store
-
-    <${pkgs.closureInfo {rootPaths = [ pinger ];}}/store-paths xargs -I{} cp -r {} ./nix/store
+    cp ${pinger}/bin/pinger ./pinger/pinger
 
     ${pkgs.zip}/bin/zip -r $out *
     '';
