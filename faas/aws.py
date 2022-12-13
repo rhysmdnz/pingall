@@ -27,6 +27,31 @@ class Deployer:
         }
         """,
         )
+        lambda_logging = aws.iam.Policy(
+            "lambdaLogging",
+            path="/",
+            description="IAM policy for logging from a lambda",
+            policy="""{
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": "arn:aws:logs:*:*:*",
+              "Effect": "Allow"
+            }
+          ]
+        }
+        """,
+        )
+        aws.iam.RolePolicyAttachment(
+            "lambdaLogs",
+            role=self.role.name,
+            policy_arn=lambda_logging.arn,
+        )
 
     def make_function(self, location):
         provider = aws.Provider(f"aws-{location}", region=location)
