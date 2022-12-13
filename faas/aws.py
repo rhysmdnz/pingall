@@ -4,8 +4,6 @@ import pulumi_awsx as awsx
 from deps import nixdeps
 import json
 
-ACCOUNT_ID = "596309961293"
-
 
 class Deployer:
     @staticmethod
@@ -13,6 +11,7 @@ class Deployer:
         return aws.get_regions().names
 
     def __init__(self):
+        self.account_id = aws.get_caller_identity().account_id
         pass
 
     def make_function(self, location):
@@ -44,7 +43,7 @@ class Deployer:
             opts=opts,
         )
 
-        def lambda_policy(lambda_name: str) -> str:
+        def lambda_policy(lambda_name: str, account_id: str) -> str:
             return json.dumps(
                 {
                     "Version": "2012-10-17",
@@ -52,14 +51,14 @@ class Deployer:
                         {
                             "Effect": "Allow",
                             "Action": "logs:CreateLogGroup",
-                            "Resource": f"arn:aws:logs:{location}:{ACCOUNT_ID}:*",
+                            "Resource": f"arn:aws:logs:{location}:{account_id}:*",
                         },
                         {
                             "Action": [
                                 "logs:CreateLogStream",
                                 "logs:PutLogEvents",
                             ],
-                            "Resource": f"arn:aws:logs:{location}:{ACCOUNT_ID}:log-group:/aws/lambda/{lambda_name}:*",
+                            "Resource": f"arn:aws:logs:{location}:{account_id}:log-group:/aws/lambda/{lambda_name}:*",
                             "Effect": "Allow",
                         },
                     ],
@@ -70,7 +69,9 @@ class Deployer:
             f"lambdaLogging-{location}",
             path="/",
             description="IAM policy for logging from a lambda",
-            policy=lambda_.name.apply(lambda_policy),
+            policy=pulumi.Output.all(lambda_.name, self.account_id).apply(
+                lambda args: lambda_policy(*args)
+            ),
         )
         aws.iam.RolePolicyAttachment(
             f"lambdaLogs-{location}",

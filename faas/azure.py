@@ -67,7 +67,7 @@ class Deployer:
             resource_group_name=self.resource_group.name,
             account_name=self.code_storage_account.name,
             container_name=code_container.name,
-            source=pulumi.asset.FileArchive(nixdeps["azure.archive"]),
+            source=pulumi.asset.FileAsset(nixdeps["azure.archive"]),
         )
 
     def make_function(self, location: str) -> pulumi.Output[str]:

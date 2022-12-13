@@ -26,7 +26,8 @@ class Deployer:
             "image",
             image_name=f"gcr.io/{project}/{image_name}",
             build=docker.DockerBuild(
-                context=nixdeps["gcp.wrapperImageBuildDir"], env={"DOCKER_DEFAULT_PLATFORM": "linux/amd64"}
+                context=nixdeps["gcp.wrapperImageBuildDir"],
+                env={"DOCKER_DEFAULT_PLATFORM": "linux/amd64"},
             ),
         )
 
