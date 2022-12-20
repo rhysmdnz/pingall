@@ -5,6 +5,7 @@ use warp::Filter;
 enum Cloud {
     GCP,
     Azure,
+    AliCloud,
     AWS,
     None,
 }
@@ -12,13 +13,16 @@ enum Cloud {
 #[cfg(feature = "azure")]
 static CLOUD: Cloud = Cloud::Azure;
 
+#[cfg(feature = "alicloud")]
+static CLOUD: Cloud = Cloud::AliCloud;
+
 #[cfg(feature = "gcp")]
 static CLOUD: Cloud = Cloud::GCP;
 
 #[cfg(feature = "aws")]
 static CLOUD: Cloud = Cloud::AWS;
 
-#[cfg(not(any(feature = "gcp", feature = "azure", feature = "aws")))]
+#[cfg(not(any(feature = "gcp", feature = "azure", feature = "aws", feature = "alicloud")))]
 static CLOUD: Cloud = Cloud::GCP;
 
 fn port() -> u16 {
@@ -32,6 +36,7 @@ fn port() -> u16 {
             .parse()
             .expect("bad port"),
         Cloud::AWS => panic!("there are no ports on AWS"),
+        Cloud::AliCloud => 9000,
         Cloud::None => match env::var("PORT") {
             Ok(val) => val.parse().expect("bad port"),
             Err(_) => 3000,

@@ -48,6 +48,16 @@ in
     '';
   };
 
+  alicloud = let pkgs = pkgs-x86_64-linux; in lib.recurseIntoAttrs rec {
+    pinger = pkgs.callPackage nix/pinger.nix { cloud = "alicloud"; inherit naersk; };
+    archive = pkgs.runCommandLocal "alicloud-pinger-archive.zip" {} ''
+    mkdir build
+    cd build
+    cp ${pinger}/bin/pinger ./bootstrap
+
+    ${pkgs.zip}/bin/zip -r $out *
+    '';
+  };
 
   azure = let pkgs = pkgs-x86_64-linux; in lib.recurseIntoAttrs rec {
     pinger = pkgs.callPackage nix/pinger.nix { cloud = "azure"; inherit naersk; };

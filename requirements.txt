@@ -5,3 +5,4 @@ pulumi-azure-native>=1.0.0,<2.0.0
 aiohttp==3.8.3
 pulumi-awsx>=1.0.0,<2.0.0
 pulumi-aws>=5.0.0,<6.0.0
+pulumi-alicloud>=3.0.0,<4.0.0

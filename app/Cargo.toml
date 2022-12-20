@@ -12,5 +12,6 @@ warp = "0.3.3"
 
 [features]
 gcp = []
+alicloud = []
 azure = []
 aws = ["lambda-web"]

@@ -6,6 +6,6 @@
   # if additional contents are added, rethink the above versioning scheme.
   contents = [ pinger ];
   config = {
-    Cmd = [ "pinger" ];
+    Cmd = [ "/bin/pinger" ];
   };
 }
