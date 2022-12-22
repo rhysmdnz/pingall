@@ -139,4 +139,4 @@ class Deployer:
             policy_type=function_logging.type,
         )
 
-        # return trigger.url_internet
+        return trigger.url_internet
