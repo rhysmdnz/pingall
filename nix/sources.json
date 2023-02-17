@@ -5,10 +5,10 @@
         "homepage": "",
         "owner": "nix-community",
         "repo": "fenix",
-        "rev": "5f4b3e24c25ee28dc766803e3e83912a8b5c3926",
-        "sha256": "1vy1rvrcxp78afnqszfvc5h1r8m3aympj2h8r2hq596cdw455d2w",
+        "rev": "3f125f02686fef60456f76087ceba890053ef62d",
+        "sha256": "1gnmmydnz9j16dpvxmg1sxjmm99wajm8aw40j3m9w0pjjvj64ipq",
         "type": "tarball",
-        "url": "https://github.com/nix-community/fenix/archive/5f4b3e24c25ee28dc766803e3e83912a8b5c3926.tar.gz",
+        "url": "https://github.com/nix-community/fenix/archive/3f125f02686fef60456f76087ceba890053ef62d.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "naersk": {
@@ -17,10 +17,10 @@
         "homepage": "",
         "owner": "nix-community",
         "repo": "naersk",
-        "rev": "6944160c19cb591eb85bbf9b2f2768a935623ed3",
-        "sha256": "01i282zrx651mpvnmlgk4fgwg56nbr1yljpzcj5irqxf18cqx3gn",
+        "rev": "d998160d6a076cfe8f9741e56aeec7e267e3e114",
+        "sha256": "1s10ygdsi17zjfiypwj7bhxys6yxws10hhq3ckfl3996v2q04d3v",
         "type": "tarball",
-        "url": "https://github.com/nix-community/naersk/archive/6944160c19cb591eb85bbf9b2f2768a935623ed3.tar.gz",
+        "url": "https://github.com/nix-community/naersk/archive/d998160d6a076cfe8f9741e56aeec7e267e3e114.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
@@ -29,10 +29,10 @@
         "homepage": "",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "2dea0f4c2d6e4603f54b2c56c22367e77869490c",
-        "sha256": "1sazdjffsjhg4qcvx18bymd8hkfiq8mpzfd23cx6xnwjzps7fkzy",
+        "rev": "ac1f5b72a9e95873d1de0233fddcb56f99884b37",
+        "sha256": "19c248q12779q22j0j28s4nimc6392n0gl1sdkcfslzzgph04zns",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/2dea0f4c2d6e4603f54b2c56c22367e77869490c.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/ac1f5b72a9e95873d1de0233fddcb56f99884b37.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nocargo": {
@@ -41,10 +41,10 @@
         "homepage": "",
         "owner": "oxalica",
         "repo": "nocargo",
-        "rev": "71a18547530901ea0ad10e33482c2cec35b22d80",
-        "sha256": "1ki42mnl4v2a7czgv02nl2g6myrvmbbhgj9rwfb5ibh16y5bkvx2",
+        "rev": "43c6f9e71372283285c11eaaa79905570a65f1cc",
+        "sha256": "16v87691gf0rbxgdlhdsp395kkk1giy2mn2gi95qlmfsxlfmzjfm",
         "type": "tarball",
-        "url": "https://github.com/oxalica/nocargo/archive/71a18547530901ea0ad10e33482c2cec35b22d80.tar.gz",
+        "url": "https://github.com/oxalica/nocargo/archive/43c6f9e71372283285c11eaaa79905570a65f1cc.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "registry-crates-io": {
@@ -53,10 +53,10 @@
         "homepage": "https://crates.io",
         "owner": "rust-lang",
         "repo": "crates.io-index",
-        "rev": "52e16042e2f2af346efca9385dd44108ef956619",
-        "sha256": "170fyn3q2ww4vpsp5ksvzizsv4i38k2qiwl14jj5ry9bbc5jhnjm",
+        "rev": "c12dd211e28a9bdb4c87de7aea2c7adc25b88677",
+        "sha256": "0mzfwwb04dnk70i6hr1hsmb6p3gdinyyp15nd8wv9c1gigga5ns1",
         "type": "tarball",
-        "url": "https://github.com/rust-lang/crates.io-index/archive/52e16042e2f2af346efca9385dd44108ef956619.tar.gz",
+        "url": "https://github.com/rust-lang/crates.io-index/archive/c12dd211e28a9bdb4c87de7aea2c7adc25b88677.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "schemastore": {
@@ -65,10 +65,10 @@
         "homepage": "http://schemastore.org",
         "owner": "SchemaStore",
         "repo": "schemastore",
-        "rev": "d028d3a7472eced188bd2fa46e9a4344b35e02c7",
-        "sha256": "1dkh1qyhswn86q34gf009lb2z5kbifpb6nc0hpi8xc88yfl4hk4p",
+        "rev": "fa28e9ecc3b3f37be7765550bcd10b4d3e4af2a7",
+        "sha256": "1ca9nmlkqwfxxd180173gacqi4s4330xsi54613zygr8vs80v94p",
         "type": "tarball",
-        "url": "https://github.com/SchemaStore/schemastore/archive/d028d3a7472eced188bd2fa46e9a4344b35e02c7.tar.gz",
+        "url": "https://github.com/SchemaStore/schemastore/archive/fa28e9ecc3b3f37be7765550bcd10b4d3e4af2a7.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
