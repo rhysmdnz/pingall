@@ -1,6 +1,5 @@
 import pulumi
 import pulumi_aws as aws
-import pulumi_awsx as awsx
 from deps import nixdeps
 import json
 
