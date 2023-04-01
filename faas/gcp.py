@@ -30,6 +30,9 @@ class Deployer:
         )
 
     def make_function(self, location: str) -> pulumi.Output[str]:
+        service_account = google_native.iam.v1.ServiceAccount(
+            f"ping-{location}", account_id=f"ping-{location}"
+        )
         # Create a Cloud Run service definition.
         service = google_native.run.v2.Service(
             f"ping-{location}",
@@ -37,6 +40,7 @@ class Deployer:
             location=location,
             project=self.project,
             template=google_native.run.v2.GoogleCloudRunV2RevisionTemplateArgs(
+                service_account=service_account.email,
                 containers=[
                     google_native.run.v2.GoogleCloudRunV2ContainerArgs(
                         image=self.image.image_name,
@@ -53,12 +57,14 @@ class Deployer:
         )
 
         # Create an IAM member to make the service publicly accessible.
-        cloudrun.IamMember(
+        google_native.run.v2.ServiceIamPolicy(
             f"invoker-{location}",
-            service=service.name,
-            role="roles/run.invoker",
-            member="allUsers",
+            service_id=service.service_id,
             location=location,
+            bindings=[
+                google_native.run.v2.GoogleIamV1BindingArgs(
+                    members=["allUsers"], role="roles/run.invoker"
+                ),
+            ],
         )
-
         return service.uri

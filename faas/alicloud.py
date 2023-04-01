@@ -55,33 +55,33 @@ class Deployer:
             ),
         )
 
-        project = alicloud.log.Project(f"log-project-{location}", opts=opts)
+#        project = alicloud.log.Project(f"log-project-{location}", opts=opts)
 
-        logstore = alicloud.log.Store(
-            f"pinger-store-{location}",
-            project=project.name,
-            name="pinger-store",
-            opts=opts,
-        )
+#        logstore = alicloud.log.Store(
+#            f"pinger-store-{location}",
+#            project=project.name,
+#            name="pinger-store",
+#            opts=opts,
+#        )
 
-        alicloud.log.StoreIndex(
-            f"pinger-store-index-{location}",
-            logstore=logstore.name,
-            project=project.name,
-            full_text=alicloud.log.StoreIndexFullTextArgs(
-                case_sensitive=False,
-                include_chinese=False,
-                token=", '\";=()[]{}?@&<>/:\\n\\t\\r",
-            ),
-            opts=opts,
-        )
+#        alicloud.log.StoreIndex(
+#            f"pinger-store-index-{location}",
+#            logstore=logstore.name,
+#            project=project.name,
+#            full_text=alicloud.log.StoreIndexFullTextArgs(
+#                case_sensitive=False,
+#                include_chinese=False,
+#                token=", '\";=()[]{}?@&<>/:\\n\\t\\r",
+#            ),
+#            opts=opts,
+#        )
 
         function_service = alicloud.fc.Service(
             f"fs-pinger-{location}",
             role=role.arn,
-            log_config=alicloud.fc.ServiceLogConfigArgs(
-                logstore=logstore.name, project=project.name
-            ),
+ #           log_config=alicloud.fc.ServiceLogConfigArgs(
+ #               logstore=logstore.name, project=project.name
+ #           ),
             opts=opts,
         )
 
@@ -124,19 +124,19 @@ class Deployer:
                 }
             )
 
-        function_logging = alicloud.ram.Policy(
-            f"functionLogging-{location}",
-            policy_name=f"functionLogging-{location}",
-            description="RAM policy for logging from a function",
-            policy_document=pulumi.Output.all(project.name, self.account_id).apply(
-                lambda args: function_policy(*args)
-            ),
-        )
-        alicloud.ram.RolePolicyAttachment(
-            f"functionLogs-{location}",
-            policy_name=function_logging.name,
-            role_name=role.name,
-            policy_type=function_logging.type,
-        )
+        #function_logging = alicloud.ram.Policy(
+        #    f"functionLogging-{location}",
+        #    policy_name=f"functionLogging-{location}",
+        #    description="RAM policy for logging from a function",
+        #    policy_document=pulumi.Output.all(project.name, self.account_id).apply(
+        #        lambda args: function_policy(*args)
+        #    ),
+        #)
+        #alicloud.ram.RolePolicyAttachment(
+        #    f"functionLogs-{location}",
+        #    policy_name=function_logging.name,
+        #    role_name=role.name,
+        #    policy_type=function_logging.type,
+        #)
 
         return trigger.url_internet
