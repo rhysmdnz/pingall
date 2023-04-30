@@ -5,10 +5,10 @@
         "homepage": "",
         "owner": "nix-community",
         "repo": "fenix",
-        "rev": "cbcb84751afdfd52d3dd3dc9caf328b59250052c",
-        "sha256": "1b9jy4rq9j5bc27ai5xnrbx40cd7ricac1xmnc9xf3ckjci8lmns",
+        "rev": "d0b0d39d4f74bec4634ea6b52e6bd49314c3988b",
+        "sha256": "1ss5mx8w19c19kis9mivxl4mqsnyifqwm4wpzlg9h9k2pbqzkjpm",
         "type": "tarball",
-        "url": "https://github.com/nix-community/fenix/archive/cbcb84751afdfd52d3dd3dc9caf328b59250052c.tar.gz",
+        "url": "https://github.com/nix-community/fenix/archive/d0b0d39d4f74bec4634ea6b52e6bd49314c3988b.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "naersk": {
@@ -29,10 +29,10 @@
         "homepage": "",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e3652e0735fbec227f342712f180f4f21f0594f2",
-        "sha256": "1h38yml73lxirxx6ynzmk3h4fw6wlgz8z8105cj733s8cvjyp03h",
+        "rev": "d6b863fd9b7bb962e6f9fdf292419a775e772891",
+        "sha256": "02rd1n6d453rdp2978bvnp99nyfa26jxgbsg78yb9mmdxvha3hnr",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/e3652e0735fbec227f342712f180f4f21f0594f2.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/d6b863fd9b7bb962e6f9fdf292419a775e772891.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nocargo": {
@@ -53,10 +53,10 @@
         "homepage": "https://crates.io",
         "owner": "rust-lang",
         "repo": "crates.io-index",
-        "rev": "05de0b61848a2d692de87c277f8b0455ec0af883",
-        "sha256": "1zaqn0qfkc36m5vf9l7xx7kq0vk4mx7mpn166m7j66xfzd0k25ra",
+        "rev": "1df1cff3e8587893c9d90e7151a59093007be543",
+        "sha256": "1xqkwwnsn3pd5vbpbfx3yl1xfnc0qwh64m0mkrv0k0xmd6iqzhq8",
         "type": "tarball",
-        "url": "https://github.com/rust-lang/crates.io-index/archive/05de0b61848a2d692de87c277f8b0455ec0af883.tar.gz",
+        "url": "https://github.com/rust-lang/crates.io-index/archive/1df1cff3e8587893c9d90e7151a59093007be543.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "schemastore": {

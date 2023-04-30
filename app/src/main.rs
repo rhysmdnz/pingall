@@ -1,5 +1,10 @@
-use std::{collections::HashMap, env};
-use warp::Filter;
+use serde::Deserialize;
+use std::{collections::HashMap, env, time::Instant};
+use warp::{
+    http::{Response, StatusCode},
+    reject::{self, Reject},
+    Filter, Rejection, Reply,
+};
 
 #[derive(Eq, PartialEq)]
 enum Cloud {
@@ -22,7 +27,12 @@ static CLOUD: Cloud = Cloud::GCP;
 #[cfg(feature = "aws")]
 static CLOUD: Cloud = Cloud::AWS;
 
-#[cfg(not(any(feature = "gcp", feature = "azure", feature = "aws", feature = "alicloud")))]
+#[cfg(not(any(
+    feature = "gcp",
+    feature = "azure",
+    feature = "aws",
+    feature = "alicloud"
+)))]
 static CLOUD: Cloud = Cloud::GCP;
 
 fn port() -> u16 {
@@ -44,14 +54,32 @@ fn port() -> u16 {
     }
 }
 
+#[derive(Deserialize)]
+pub struct URLQuery {
+    url: String,
+}
+
+#[derive(Debug)]
+
+enum Error {
+    ReqwestError(reqwest::Error),
+}
+
+impl warp::reject::Reject for Error {}
+
+pub async fn fetch_url(query: URLQuery) -> Result<impl Reply, Rejection> {
+    let start = Instant::now();
+    let response = reqwest::get(query.url)
+        .await
+        .map_err(|e| reject::custom(Error::ReqwestError(e)))?;
+    response.status();
+    let duration = start.elapsed();
+    Ok(format!("{:}", duration.as_millis()))
+}
+
 #[tokio::main]
 async fn main() {
-    let hello = warp::any()
-        .and(warp::query::<HashMap<String, String>>())
-        .map(|p: HashMap<String, String>| match p.get("name") {
-            Some(name) => format!("Hello, {}!", name),
-            None => format!("Hello, World!"),
-        });
+    let hello = warp::any().and(warp::query()).and_then(fetch_url);
 
     #[cfg(feature = "aws")]
     lambda_web::run_hyper_on_lambda(warp::service(hello))
