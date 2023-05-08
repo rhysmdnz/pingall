@@ -78,10 +78,19 @@ class Deployer:
             policy_arn=lambda_logging.arn,
         )
 
-        url = aws.lambda_.FunctionUrl(
-            f"woof-{location}",
-            function_name=lambda_.arn,
-            authorization_type="NONE",
-            opts=opts,
-        )
-        return url.function_url
+        if location in [
+            "eu-central-2",
+            "ap-southeast-4",
+            "eu-south-2",
+            "me-central-1",
+            "ap-south-2",
+        ]:
+            url = ""
+        else:
+            url = aws.lambda_.FunctionUrl(
+                f"woof-{location}",
+                function_name=lambda_.arn,
+                authorization_type="NONE",
+                opts=opts,
+            ).function_url
+        return url
