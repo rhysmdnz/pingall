@@ -1,5 +1,4 @@
 import pulumi
-import pulumi_docker as docker
 from pulumi_gcp import cloudrun
 import pulumi_google_native as google_native
 from deps import nixdeps
@@ -19,15 +18,6 @@ class Deployer:
         # Import the provider's configuration settings.
         gcp_config = pulumi.Config("google-native")
         self.project = gcp_config.require("project")
-        # Create a container image for the service.
-        # self.image = docker.Image(
-        #     "image",
-        #     image_name=f"gcr.io/{self.project}/{self.image_name}",
-        #     build=docker.DockerBuild(
-        #         context=nixdeps["gcp.wrapperImageBuildDir"],
-        #         env={"DOCKER_DEFAULT_PLATFORM": "linux/amd64"},
-        #     ),
-        # )
 
     def make_function(self, location: str) -> pulumi.Output[str]:
         registry = google_native.artifactregistry.v1.Repository(
@@ -45,14 +35,6 @@ class Deployer:
             remote_tag=f"{location}-docker.pkg.dev/{self.project}/pinger/{self.image_name}",
             opts=pulumi.ResourceOptions(depends_on=[registry])
         )
-        # self.image = docker.Image(
-        #     image_name=,
-        #     build=docker.DockerBuild(
-        #         context=nixdeps["gcp.wrapperImageBuildDir"],
-        #         env={"DOCKER_DEFAULT_PLATFORM": "linux/amd64"},
-        #     ),
-        #     opts=pulumi.ResourceOptions(depends_on=[registry]),
-        # )
         service_account = google_native.iam.v1.ServiceAccount(
             f"ping-{location}", account_id=f"ping-{location}"
         )
