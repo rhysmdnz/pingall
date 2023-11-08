@@ -6,7 +6,6 @@ import pulumi
 depNames = [
     "azure.archive",
     "gcp.image",
-    "gcp.wrapperImageBuildDir",
     "aws.archive",
     "alicloud.archive",
 ]
@@ -29,5 +28,7 @@ nixdeps = {name: drv.strip() for name, drv in zip(depNames, drvs)}
 pulumi.info("Loading docker dependencies...")
 # drv names are always shell-safe, it's fineeeeeeeeeeeeeeeee
 subprocess.run(f"docker load <{nixdeps['gcp.image']}", shell=True)
+
+pulumi.info(f"Docker {nixdeps['gcp.image']}")
 
 pulumi.info("Dependencies loaded.")

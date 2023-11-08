@@ -11,9 +11,9 @@ class Deployer:
         # return alicloud.get_regions().ids
         return [
             "cn-qingdao",
-            "cn-beijing",
+            # "cn-beijing",
             "cn-huhehaote",
-            "cn-zhangjiakou",
+            # "cn-zhangjiakou",
             "cn-shanghai",
             "cn-hongkong",
             "cn-hangzhou",
