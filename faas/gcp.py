@@ -3,12 +3,13 @@ from pulumi_gcp import cloudrun
 import pulumi_google_native as google_native
 from deps import nixdeps
 import pulumi_containerregistry as containerregistry
+import json
 
 
 class Deployer:
     @staticmethod
     def list_locations() -> list[str]:
-        return filter(lambda l: l != "me-central2", cloudrun.get_locations().locations) 
+        return filter(lambda l: l != "me-central2", cloudrun.get_locations().locations)
 
     def __init__(self):
         # Import the program's configuration settings.
@@ -23,17 +24,27 @@ class Deployer:
         registry = google_native.artifactregistry.v1.Repository(
             f"ping-{location}-docker",
             format=google_native.artifactregistry.v1.RepositoryFormat.DOCKER,
+            # cleanup_policies={
+            #     "delete untagged": json.dumps(
+            #         {
+            #             "action": "DELETE",
+            #             "condition": {"tagState": "UNTAGGED"},
+            #             "id": "delete untagged",
+            #         }
+            #     )
+            # },
             location=location,
             project=self.project,
             repository_id="pinger",
             mode=google_native.artifactregistry.v1.RepositoryMode.STANDARD_REPOSITORY,
         )
+        nix_hash = nixdeps["gcp.image"].split("/")[-1].split("-")[0]
         # Create a container image for the service.
         image = containerregistry.Resource(
             f"image-{location}",
             image=pulumi.FileAsset(nixdeps["gcp.image"]),
-            remote_tag=f"{location}-docker.pkg.dev/{self.project}/pinger/{self.image_name}",
-            opts=pulumi.ResourceOptions(depends_on=[registry])
+            remote_tag=f"{location}-docker.pkg.dev/{self.project}/pinger/{self.image_name}/{nix_hash}",
+            opts=pulumi.ResourceOptions(depends_on=[registry]),
         )
         service_account = google_native.iam.v1.ServiceAccount(
             f"ping-{location}", account_id=f"ping-{location}"

@@ -3,3 +3,4 @@ venv/
 result
 result-*
 .DS_Store
+.vscode/

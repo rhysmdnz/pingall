@@ -84,8 +84,77 @@ class Deployer:
             "eu-south-2",
             "me-central-1",
             "ap-south-2",
+            "il-central-1",
+            "ca-west-1",
         ]:
-            url = ""
+            apigw = aws.apigateway.RestApi(
+                f"restApiGateway-{location}",
+                endpoint_configuration=aws.apigateway.RestApiEndpointConfigurationArgs(
+                    types="REGIONAL"
+                ),
+                opts=opts,
+            )
+            resource = aws.apigateway.Resource(
+                f"resource-{location}",
+                rest_api=apigw.id,
+                parent_id=apigw.root_resource_id,
+                path_part="{proxy+}",
+                opts=opts,
+            )
+            method = aws.apigateway.Method(
+                f"method-{location}",
+                rest_api=apigw.id,
+                resource_id=resource.id,
+                http_method="ANY",
+                authorization="NONE",
+                opts=opts,
+            )
+            integration = aws.apigateway.Integration(
+                f"integration-{location}",
+                rest_api=apigw.id,
+                resource_id=resource.id,
+                http_method=method.http_method,
+                type="AWS_PROXY",
+                integration_http_method="POST",
+                uri=lambda_.invoke_arn,
+                opts=opts,
+            )
+            method_root = aws.apigateway.Method(
+                f"method-root-{location}",
+                rest_api=apigw.id,
+                resource_id=apigw.root_resource_id,
+                http_method="ANY",
+                authorization="NONE",
+                opts=opts,
+            )
+            integration_root = aws.apigateway.Integration(
+                f"integration-root-{location}",
+                rest_api=apigw.id,
+                resource_id=apigw.root_resource_id,
+                http_method=method.http_method,
+                type="AWS_PROXY",
+                integration_http_method="POST",
+                uri=lambda_.invoke_arn,
+                opts=opts,
+            )
+            deployment = aws.apigateway.Deployment(
+                f"deployment-{location}",
+                rest_api=apigw.id,
+                stage_name="test",
+                opts=pulumi.ResourceOptions(
+                    provider=provider, depends_on=[integration, integration_root]
+                ),
+            )
+            aws.lambda_.Permission(
+                f"allowApiGateway-{location}",
+                statement_id="AllowAPIGatewayInvoke",
+                action="lambda:InvokeFunction",
+                function=lambda_.name,
+                principal="apigateway.amazonaws.com",
+                source_arn=pulumi.Output.format("{0}/*/*", apigw.execution_arn),
+                opts=opts,
+            )
+            url = deployment.invoke_url
         else:
             url = aws.lambda_.FunctionUrl(
                 f"woof-{location}",

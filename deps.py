@@ -14,8 +14,17 @@ pulumi.info("Loading nix dependencies...")
 
 drvs = (
     subprocess.run(
-        ["nix-build", os.path.dirname(os.path.realpath(__file__))]
-        + sum((["-A", x] for x in depNames), []),
+        [
+            "nix",
+            "build",
+            "--print-out-paths",
+            "--system",
+            "x86_64-linux",
+        ]
+        + sum(
+            ([f"{os.path.dirname(os.path.realpath(__file__))}#{x}"] for x in depNames),
+            [],
+        ),
         check=True,
         stdout=subprocess.PIPE,
     )
