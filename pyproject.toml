@@ -14,7 +14,7 @@ pulumi-google-native = "<1.0.0"
 pulumi-azure-native = ">=2.0.0,<3.0.0"
 pulumi-aws = ">=6.0.0,<7.0.0"
 pulumi-containerregistry = "<1.0.0"
-pulumi-alicloud = {git = "https://git@github.com/rhysmdnz/pulumi-alicloud.git", rev = "v0.0.2", subdirectory = "sdk/python"}
+pulumi-alicloud = {git = "https://git@github.com/rhysmdnz/pulumi-alicloud.git", rev = "39cfd4d2689cb002bb8331bf04043141c95e4280", subdirectory = "sdk/python"}
 setuptools = "^69.2.0"
 
 

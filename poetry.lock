@@ -176,7 +176,7 @@ six = ">=1.12,<2.0"
 
 [[package]]
 name = "pulumi_alicloud"
-version = "0.0.2"
+version = "0.0.0"
 description = "A Pulumi package for creating and managing AliCloud resources."
 optional = false
 python-versions = "*"
@@ -191,8 +191,8 @@ semver = ">=2.8.1"
 [package.source]
 type = "git"
 url = "https://git@github.com/rhysmdnz/pulumi-alicloud.git"
-reference = "v0.0.2"
-resolved_reference = "65ab5d420daf134673384137bde762ce7434990a"
+reference = "39cfd4d2689cb002bb8331bf04043141c95e4280"
+resolved_reference = "39cfd4d2689cb002bb8331bf04043141c95e4280"
 subdirectory = "sdk/python"
 
 [[package]]
@@ -376,4 +376,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "3d254c775d4da96a1e407f234dfa5242afa408148bee6c89be0bc20c017041dd"
+content-hash = "249ce44902f776503e0e7f7bbbd7c93979aa1abd145226a404a52abd7d9381b1"
