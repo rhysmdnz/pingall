@@ -5,15 +5,44 @@ jobs:
   preview:
     name: Preview
     runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
+      pull-requests: "write"
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - name: "Setup Python, Poetry and Dependencies"
+        uses: packetcoders/action-setup-cache-python-poetry@main
         with:
-          python-version: 3.9
-      - run: pip install -r requirements.txt
-      - uses: pulumi/actions@v3
+          python-version: 3.12
+          poetry-version: 1.8.2
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: "google-github-actions/auth@v2"
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - uses: aliyun/configure-aliyun-credentials-action@v1
+        with:
+          role-to-assume: ${{ secrets.ALIYUN_ROLE }}
+          oidc-provider-arn: ${{ secrets.ALIYUN_PROVIDER }}
+          audience: "github-actions"
+      - name: Run pulumi preview
+        uses: pulumi/actions@v4
         with:
           command: preview
           stack-name: dev
           comment-on-pr: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          ARM_USE_OIDC: "true"
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          PULUMI_PYTHON_CMD: "${{ github.workspace }}/.venv/bin/python"
