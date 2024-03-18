@@ -52,7 +52,7 @@ class Deployer:
             # "norwaywest",
             "norwayeast",
             # "brazilsoutheast",
-            "westus3",
+            # "westus3",
             # "jioindiawest",
             # "jioindiacentral",
             "swedencentral",

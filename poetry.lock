@@ -175,25 +175,36 @@ semver = ">=2.13,<3.0"
 six = ">=1.12,<2.0"
 
 [[package]]
-name = "pulumi_alicloud"
-version = "0.0.2"
+name = "pulumi-alicloud"
+version = "3.50.0"
 description = "A Pulumi package for creating and managing AliCloud resources."
 optional = false
-python-versions = "*"
-files = []
-develop = false
+python-versions = ">=3.8"
+files = [
+    {file = "pulumi_alicloud-3.50.0-py3-none-any.whl", hash = "sha256:6ad423aa3a207bde4e015f2c58843d5e173b64131c70c6251f68fa7b972c6160"},
+    {file = "pulumi_alicloud-3.50.0.tar.gz", hash = "sha256:ffd9a9a71f472502b2ba95ad7e399ebf5e66e0d6719f5878650ea303eb70f576"},
+]
 
 [package.dependencies]
 parver = ">=0.2.1"
 pulumi = ">=3.0.0,<4.0.0"
 semver = ">=2.8.1"
 
-[package.source]
-type = "git"
-url = "https://git@github.com/rhysmdnz/pulumi-alicloud.git"
-reference = "v0.0.2"
-resolved_reference = "65ab5d420daf134673384137bde762ce7434990a"
-subdirectory = "sdk/python"
+[[package]]
+name = "pulumi-alicloud-fc-url"
+version = "0.0.2"
+description = "A Pulumi package for creating and managing alicloud-fc-url cloud resources."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pulumi_alicloud_fc_url-0.0.2-py3-none-any.whl", hash = "sha256:3dda7b0af2edbaf14fdaf920b453221f08fffa2ee9e8e3e528ef9309a1c62cd3"},
+    {file = "pulumi_alicloud_fc_url-0.0.2.tar.gz", hash = "sha256:0966028555caf3f53d99779c3365841a238342ff9722b6389128f7736a96ebf2"},
+]
+
+[package.dependencies]
+parver = ">=0.2.1"
+pulumi = ">=3.0.0,<4.0.0"
+semver = ">=2.8.1"
 
 [[package]]
 name = "pulumi-aws"
@@ -236,6 +247,22 @@ python-versions = ">=3.8"
 files = [
     {file = "pulumi_containerregistry-0.0.14-py3-none-any.whl", hash = "sha256:3ab1fd0fa43a7a537681841d552e0b69571d0ff6d75374d31806bfcb4168b9b2"},
     {file = "pulumi_containerregistry-0.0.14.tar.gz", hash = "sha256:09d73a8eb2e01f240c7372dd606c1d2850fe89029f23558a3bd44d7a7863b99c"},
+]
+
+[package.dependencies]
+parver = ">=0.2.1"
+pulumi = ">=3.0.0,<4.0.0"
+semver = ">=2.8.1"
+
+[[package]]
+name = "pulumi-docker"
+version = "4.5.1"
+description = "A Pulumi package for interacting with Docker in Pulumi programs"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pulumi_docker-4.5.1-py3-none-any.whl", hash = "sha256:8668c64d13254d8348029e42537ebbf3effbb811467ac6e7b1e8468361f08a9e"},
+    {file = "pulumi_docker-4.5.1.tar.gz", hash = "sha256:5c3e85afc79fd015bb3d039ab637a1b55e3e3a7f6e73ed2e3ca5289988529218"},
 ]
 
 [package.dependencies]
@@ -376,4 +403,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "3d254c775d4da96a1e407f234dfa5242afa408148bee6c89be0bc20c017041dd"
+content-hash = "ff1d1fba8dae7b226b8c3b0f9890794c8b7dabe5ec2a6d42c242b53e294f06d0"

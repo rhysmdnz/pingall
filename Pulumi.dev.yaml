@@ -5,8 +5,6 @@ config:
   azure-native:location: centralus
   gcp:project: pingall
   gcp:region: us-central1
-  google-native:project: pingall
-  google-native:region: us-central1
   pingall:appPath: app
   pingall:concurrency: "50"
   pingall:containerPort: "8080"

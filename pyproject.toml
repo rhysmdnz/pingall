@@ -12,9 +12,11 @@ pulumi = ">=3.0.0,<4.0.0"
 pulumi-gcp = ">=7.0.0,<8.0.0"
 pulumi-google-native = "<1.0.0"
 pulumi-azure-native = ">=2.0.0,<3.0.0"
+pulumi-docker = ">=4.0.0,<5.0.0"
 pulumi-aws = ">=6.0.0,<7.0.0"
 pulumi-containerregistry = "<1.0.0"
-pulumi-alicloud = {git = "https://git@github.com/rhysmdnz/pulumi-alicloud.git", rev = "v0.0.2", subdirectory = "sdk/python"}
+pulumi-alicloud = ">=3.0.0,<4.0.0"
+pulumi-alicloud-fc-url = "0.0.2"
 setuptools = "^69.2.0"
 
 
