@@ -28,11 +28,12 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
-      - uses: aliyun/configure-aliyun-credentials-action@v1
+      - uses: "mozillazg/alibabacloud-oidc-auth@v1"
         with:
-          role-to-assume: ${{ secrets.ALIYUN_ROLE }}
+          role-arn-to-assume: ${{ secrets.ALIYUN_ROLE }}
           oidc-provider-arn: ${{ secrets.ALIYUN_PROVIDER }}
           audience: "github-actions"
+          export-environment-variables: true
       - name: Run pulumi preview
         uses: pulumi/actions@v5
         with:
