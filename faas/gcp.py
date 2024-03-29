@@ -12,7 +12,8 @@ class Deployer:
             lambda l: l != "me-central2", gcp.cloudrun.get_locations().locations
         )
 
-    def __init__(self):
+    def __init__(self, calling_service_account: gcp.serviceaccount.Account):
+        self.calling_service_account = calling_service_account
         # Import the program's configuration settings.
         config = pulumi.Config()
         self.image_name = config.get("imageName", "my-app")
@@ -25,15 +26,15 @@ class Deployer:
         registry = gcp.artifactregistry.Repository(
             f"ping-{location}-docker",
             format="DOCKER",
-            # cleanup_policies={
-            #     "delete untagged": json.dumps(
-            #         {
-            #             "action": "DELETE",
-            #             "condition": {"tagState": "UNTAGGED"},
-            #             "id": "delete untagged",
-            #         }
-            #     )
-            # },
+            cleanup_policies=[
+                gcp.artifactregistry.RepositoryCleanupPolicyArgs(
+                    id="delete untagged",
+                    action="DELETE",
+                    condition=gcp.artifactregistry.RepositoryCleanupPolicyConditionArgs(
+                        tag_state="UNTAGGED"
+                    ),
+                )
+            ],
             location=location,
             project=self.project,
             repository_id="pinger",
@@ -62,15 +63,18 @@ class Deployer:
                     gcp.cloudrunv2.ServiceTemplateContainerArgs(
                         image=image.remote_tag,
                         resources=gcp.cloudrunv2.ServiceTemplateContainerResourcesArgs(
+                            cpu_idle=True,
                             limits=dict(
-                                memory="1Gi",
+                                memory="128Mi",
                                 cpu="1",
                             ),
                         ),
                     ),
                 ],
                 max_instance_request_concurrency=50,
+                scaling=gcp.cloudrunv2.ServiceTemplateScalingArgs(max_instance_count=1),
             ),
+            custom_audiences=["pinger"],
         )
 
         # Create an IAM member to make the service publicly accessible.
@@ -78,7 +82,10 @@ class Deployer:
             f"invoker-{location}",
             name=service.name,
             location=location,
-            members=["allUsers"],
+            members=[self.calling_service_account.member],
             role="roles/run.invoker",
         )
         return service.uri
+
+    def finish(self):
+        pass

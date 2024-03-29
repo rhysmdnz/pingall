@@ -5,9 +5,11 @@
     naersk.inputs.nixpkgs.follows = "nixpkgs";
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
+    aws-lambda-web-adapter-src.url = "github:awslabs/aws-lambda-web-adapter/v0.8.1";
+    aws-lambda-web-adapter-src.flake = false;
   };
 
-  outputs = { self, nixpkgs, naersk, fenix, ... }@inputs:
+  outputs = { self, nixpkgs, naersk, fenix, aws-lambda-web-adapter-src, ... }@inputs:
     let
       pkgs = (import nixpkgs) {
         system = "x86_64-linux";
@@ -17,6 +19,7 @@
           minimal.rustc
           minimal.cargo
           targets.x86_64-unknown-linux-musl.latest.rust-std
+          targets.x86_64-pc-windows-gnu.latest.rust-std
         ];
       naersk' = pkgs.callPackage naersk {
         cargo = toolchain;
@@ -35,8 +38,17 @@
           archive = pkgs.runCommandLocal "aws-pinger-archive.zip" { } ''
             mkdir build
             cd build
-            cp ${pinger}/bin/pinger ./bootstrap
+            cp ${pinger}/bin/pinger ./pinger
 
+            ${pkgs.zip}/bin/zip -r $out *
+          '';
+          adapter = pkgs.callPackage nix/aws-lambda-web-adapter.nix { aws-lambda-web-adapter-src = aws-lambda-web-adapter-src; naersk = naersk'; };
+          adapter-archive = pkgs.runCommandLocal "aws-adapter-archive.zip" { } ''
+            mkdir build
+            cd build
+            mkdir extensions
+            cp ${adapter}/bin/lambda-adapter ./extensions/lambda-adapter
+            cp ${aws-lambda-web-adapter-src}/layer/bootstrap ./bootstrap
             ${pkgs.zip}/bin/zip -r $out *
           '';
         };

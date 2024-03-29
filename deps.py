@@ -7,6 +7,7 @@ depNames = [
     "azure.archive",
     "gcp.image",
     "aws.archive",
+    "aws.adapter-archive",
     "alicloud.archive",
 ]
 

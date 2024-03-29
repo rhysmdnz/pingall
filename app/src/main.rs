@@ -45,7 +45,7 @@ fn port() -> u16 {
             .expect("no port")
             .parse()
             .expect("bad port"),
-        Cloud::AWS => panic!("there are no ports on AWS"),
+        Cloud::AWS => 8080,
         Cloud::AliCloud => 9000,
         Cloud::None => match env::var("PORT") {
             Ok(val) => val.parse().expect("bad port"),
@@ -81,11 +81,5 @@ pub async fn fetch_url(query: URLQuery) -> Result<impl Reply, Rejection> {
 async fn main() {
     let hello = warp::any().and(warp::query()).and_then(fetch_url);
 
-    #[cfg(feature = "aws")]
-    lambda_web::run_hyper_on_lambda(warp::service(hello))
-        .await
-        .unwrap();
-
-    #[cfg(not(feature = "aws"))]
     warp::serve(hello).run(([0, 0, 0, 0], port())).await;
 }

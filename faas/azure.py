@@ -1,6 +1,7 @@
 import pulumi
 import pulumi_azure_native as azure
 from deps import nixdeps
+import pulumi_gcp as gcp
 
 
 class Deployer:
@@ -59,7 +60,7 @@ class Deployer:
             # "qatarcentral",
             # "swedensouth",
             # "polandcentral",
-            # "italynorth",
+            # "italynorth", # ummm umm subscription not found?
             # "israelcentral",
             # "spaincentral",
             # "mexicocentral",
@@ -67,16 +68,21 @@ class Deployer:
             # "taiwannorthwest",
         ]
 
-    def __init__(self):
+    def __init__(self, calling_service_account: gcp.serviceaccount.Account):
         self.resource_group = azure.resources.ResourceGroup("pingall")
 
-        self.code_storage_account = azure.storage.StorageAccount(
-            "pingallsa",
+        self.subscription_id = azure.authorization.get_client_config().subscription_id
+
+    def make_function(self, location: str) -> pulumi.Output[str]:
+        code_storage_account = azure.storage.StorageAccount(
+            f"pingallcs{location}",
+            account_name=f"pingcs{location}",
             resource_group_name=self.resource_group.name,
             sku=azure.storage.SkuArgs(
                 name=azure.storage.SkuName.STANDARD_LRS,
             ),
             kind=azure.storage.Kind.STORAGE_V2,
+            location=location,
             allow_blob_public_access=False,
             # This is used by the pulumi provider to upload code so can't disable :(
             allow_shared_key_access=True,
@@ -84,25 +90,21 @@ class Deployer:
         )
 
         code_container = azure.storage.BlobContainer(
-            "zips",
+            f"zips-{location}",
             resource_group_name=self.resource_group.name,
-            account_name=self.code_storage_account.name,
+            account_name=code_storage_account.name,
         )
 
         nix_hash = nixdeps["azure.archive"].split("/")[-1].split("-")[0]
 
-        self.code_blob = azure.storage.Blob(
-            "zip",
+        code_blob = azure.storage.Blob(
+            f"zip-{location}",
             blob_name=f"{nix_hash}.zip",
             resource_group_name=self.resource_group.name,
-            account_name=self.code_storage_account.name,
+            account_name=code_storage_account.name,
             container_name=code_container.name,
             source=pulumi.asset.FileAsset(nixdeps["azure.archive"]),
         )
-
-        self.subscription_id = azure.authorization.get_client_config().subscription_id
-
-    def make_function(self, location: str) -> pulumi.Output[str]:
         app_storage = azure.storage.StorageAccount(
             f"pingsa{location}",
             account_name=f"pingsa{location}",
@@ -150,12 +152,13 @@ class Deployer:
                         value=app_storage.name,
                     ),
                     azure.web.NameValuePairArgs(
-                        name="WEBSITE_RUN_FROM_PACKAGE", value=self.code_blob.url
+                        name="WEBSITE_RUN_FROM_PACKAGE", value=code_blob.url
                     ),
                 ],
                 http20_enabled=True,
                 ftps_state=azure.web.FtpsState.DISABLED,
             ),
+            opts=pulumi.ResourceOptions(replace_on_changes=["server_farm_id", "kind"]),
         )
         azure.authorization.RoleAssignment(
             f"codeAccessAssignment{location}",
@@ -165,7 +168,7 @@ class Deployer:
             scope=pulumi.Output.format(
                 "subscriptions/{2}/resourceGroups/{0}/providers/Microsoft.Storage/storageAccounts/{1}",
                 self.resource_group.name,
-                self.code_storage_account.name,
+                code_storage_account.name,
                 self.subscription_id,
             ),
         )
@@ -182,3 +185,6 @@ class Deployer:
             ),
         )
         return app.default_host_name.apply(lambda host: f"https://{host}/api/pinger")
+
+    def finish(self):
+        pass
