@@ -4,6 +4,7 @@ from deps import nixdeps
 import json
 import pulumi_gcp as gcp
 import pulumi_std as std
+import socket
 
 
 class Deployer:
@@ -118,15 +119,13 @@ class Deployer:
             policy_arn=lambda_logging.arn,
         )
 
-        if location in [
-            "eu-central-2",
-            "ap-southeast-4",
-            "eu-south-2",
-            "me-central-1",
-            "ap-south-2",
-            "il-central-1",
-            "ca-west-1",
-        ]:
+        try:
+            socket.getaddrinfo(f"a.lambda-url.{location}.on.aws", 443)
+            function_url_suport = True
+        except socket.gaierror:
+            function_url_suport = False
+
+        if not function_url_suport:
             apigw = aws.apigateway.RestApi(
                 f"restApiGateway-{location}",
                 endpoint_configuration=aws.apigateway.RestApiEndpointConfigurationArgs(
