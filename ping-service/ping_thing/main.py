@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer, OAuth2
 import aiohttp
 import asyncio
 import google.oauth2.id_token
@@ -13,7 +14,28 @@ import os
 import json
 from fastapi.responses import StreamingResponse
 from typing import List
+from firebase_admin import auth as firebase_auth, initialize_app
 
+
+def get_user_token(res: Response, credential: HTTPAuthorizationCredentials=Depends(HTTPBearer(auto_error=False))):
+    if credential is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Bearer authentication is needed",
+            headers={'WWW-Authenticate': 'Bearer realm="auth_required"'},
+        )
+    try:
+        decoded_token = firebase_auth.verify_id_token(credential.credentials)
+    except Exception as err:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Invalid authentication from Firebase. {err}",
+            headers={'WWW-Authenticate': 'Bearer error="invalid_token"'},
+        )
+    res.headers['WWW-Authenticate'] = 'Bearer realm="auth_required"'
+    return decoded_token
+
+initialize_app()
 
 app = FastAPI()
 
@@ -139,7 +161,7 @@ async def pinger_streamer(url: str):
 
 
 @app.get("/")
-async def root(url: str):
+async def root(url: str, user = Depends(get_user_token)):
     return StreamingResponse(pinger_streamer(url), media_type="application/x-ndjson")
 
 
