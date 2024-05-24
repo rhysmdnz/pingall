@@ -256,13 +256,13 @@ semver = ">=2.8.1"
 
 [[package]]
 name = "pulumi-docker"
-version = "4.5.1"
+version = "4.5.4"
 description = "A Pulumi package for interacting with Docker in Pulumi programs"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "pulumi_docker-4.5.1-py3-none-any.whl", hash = "sha256:8668c64d13254d8348029e42537ebbf3effbb811467ac6e7b1e8468361f08a9e"},
-    {file = "pulumi_docker-4.5.1.tar.gz", hash = "sha256:5c3e85afc79fd015bb3d039ab637a1b55e3e3a7f6e73ed2e3ca5289988529218"},
+    {file = "pulumi_docker-4.5.4-py3-none-any.whl", hash = "sha256:ba57afbe27485593438470b2a1af17c614d54a8ae6fe37824a8eb0500b4e4695"},
+    {file = "pulumi_docker-4.5.4.tar.gz", hash = "sha256:519bb440d8f1d550b9f2fef8c1bb2e56ec579b1d0fbf9fb708452a27bb3fef23"},
 ]
 
 [package.dependencies]
@@ -300,21 +300,6 @@ files = [
 [package.dependencies]
 parver = ">=0.2.1"
 pulumi = ">=3.0.0,<4.0.0"
-semver = ">=2.8.1"
-
-[[package]]
-name = "pulumi-std"
-version = "1.6.2"
-description = "Standard library functions"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "pulumi_std-1.6.2.tar.gz", hash = "sha256:5ea5ef0c90f522fb8aa61acf65998eb2248cad51ec79b7e237d346b3a6da32bb"},
-]
-
-[package.dependencies]
-parver = ">=0.2.1"
-pulumi = "*"
 semver = ">=2.8.1"
 
 [[package]]
@@ -418,4 +403,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "c7b15f39b94e76a9471eeeafc8771c4405b8469315b7d5e5efe86842eb8f04cf"
+content-hash = "ff1d1fba8dae7b226b8c3b0f9890794c8b7dabe5ec2a6d42c242b53e294f06d0"
