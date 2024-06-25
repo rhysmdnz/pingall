@@ -224,13 +224,13 @@ semver = ">=2.8.1"
 
 [[package]]
 name = "pulumi-azure-native"
-version = "2.32.0"
+version = "2.47.1"
 description = "A native Pulumi package for creating and managing Azure resources."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pulumi_azure_native-2.32.0-py3-none-any.whl", hash = "sha256:670d95a753f491e561890a1df03c78bbf9f48ab7e3ce8f4b4b23f14b699d740a"},
-    {file = "pulumi_azure_native-2.32.0.tar.gz", hash = "sha256:91d524b692f7355007df85a563392879d01dff1ef1657a0c54f2f4e812c9ee0d"},
+    {file = "pulumi_azure_native-2.47.1-py3-none-any.whl", hash = "sha256:fd206faabb68e49a332b97c0838f16306cf4b7af7b192728a041448d7d5b659f"},
+    {file = "pulumi_azure_native-2.47.1.tar.gz", hash = "sha256:ab1882e3bc953b5bcfe7860347c6fa844b5f1a1d1db47fc5831fac1d1d0893c1"},
 ]
 
 [package.dependencies]
@@ -300,21 +300,6 @@ files = [
 [package.dependencies]
 parver = ">=0.2.1"
 pulumi = ">=3.0.0,<4.0.0"
-semver = ">=2.8.1"
-
-[[package]]
-name = "pulumi-std"
-version = "1.6.2"
-description = "Standard library functions"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "pulumi_std-1.6.2.tar.gz", hash = "sha256:5ea5ef0c90f522fb8aa61acf65998eb2248cad51ec79b7e237d346b3a6da32bb"},
-]
-
-[package.dependencies]
-parver = ">=0.2.1"
-pulumi = "*"
 semver = ">=2.8.1"
 
 [[package]]
@@ -418,4 +403,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "c7b15f39b94e76a9471eeeafc8771c4405b8469315b7d5e5efe86842eb8f04cf"
+content-hash = "ff1d1fba8dae7b226b8c3b0f9890794c8b7dabe5ec2a6d42c242b53e294f06d0"
