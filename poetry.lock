@@ -176,13 +176,13 @@ six = ">=1.12,<2.0"
 
 [[package]]
 name = "pulumi-alicloud"
-version = "3.50.0"
+version = "3.57.1"
 description = "A Pulumi package for creating and managing AliCloud resources."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pulumi_alicloud-3.50.0-py3-none-any.whl", hash = "sha256:6ad423aa3a207bde4e015f2c58843d5e173b64131c70c6251f68fa7b972c6160"},
-    {file = "pulumi_alicloud-3.50.0.tar.gz", hash = "sha256:ffd9a9a71f472502b2ba95ad7e399ebf5e66e0d6719f5878650ea303eb70f576"},
+    {file = "pulumi_alicloud-3.57.1-py3-none-any.whl", hash = "sha256:3a3c62edb3b24f7f4b196f50541a5356ce6f51c32c8c2aee5f73458644a7bd5a"},
+    {file = "pulumi_alicloud-3.57.1.tar.gz", hash = "sha256:4239e9f41dbff73532721a87a037a21d789bbd5d6cc54bd758ebeba678832145"},
 ]
 
 [package.dependencies]
@@ -303,21 +303,6 @@ pulumi = ">=3.0.0,<4.0.0"
 semver = ">=2.8.1"
 
 [[package]]
-name = "pulumi-std"
-version = "1.6.2"
-description = "Standard library functions"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "pulumi_std-1.6.2.tar.gz", hash = "sha256:5ea5ef0c90f522fb8aa61acf65998eb2248cad51ec79b7e237d346b3a6da32bb"},
-]
-
-[package.dependencies]
-parver = ">=0.2.1"
-pulumi = "*"
-semver = ">=2.8.1"
-
-[[package]]
 name = "pyyaml"
 version = "6.0.1"
 description = "YAML parser and emitter for Python"
@@ -418,4 +403,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "c7b15f39b94e76a9471eeeafc8771c4405b8469315b7d5e5efe86842eb8f04cf"
+content-hash = "ff1d1fba8dae7b226b8c3b0f9890794c8b7dabe5ec2a6d42c242b53e294f06d0"
