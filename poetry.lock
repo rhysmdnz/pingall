@@ -158,12 +158,12 @@ files = [
 
 [[package]]
 name = "pulumi"
-version = "3.111.1"
+version = "3.122.0"
 description = "Pulumi's Python SDK"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pulumi-3.111.1-py3-none-any.whl", hash = "sha256:70c1b384545897833ed50d25d6362d7ee44811f377a31a1333c31924d397a3c4"},
+    {file = "pulumi-3.122.0-py3-none-any.whl", hash = "sha256:278ca09f78f4e00cf0d6badb860430b056423bae96eee263ddbb45d529e6478e"},
 ]
 
 [package.dependencies]
@@ -303,21 +303,6 @@ pulumi = ">=3.0.0,<4.0.0"
 semver = ">=2.8.1"
 
 [[package]]
-name = "pulumi-std"
-version = "1.6.2"
-description = "Standard library functions"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "pulumi_std-1.6.2.tar.gz", hash = "sha256:5ea5ef0c90f522fb8aa61acf65998eb2248cad51ec79b7e237d346b3a6da32bb"},
-]
-
-[package.dependencies]
-parver = ">=0.2.1"
-pulumi = "*"
-semver = ">=2.8.1"
-
-[[package]]
 name = "pyyaml"
 version = "6.0.1"
 description = "YAML parser and emitter for Python"
@@ -418,4 +403,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "c7b15f39b94e76a9471eeeafc8771c4405b8469315b7d5e5efe86842eb8f04cf"
+content-hash = "ff1d1fba8dae7b226b8c3b0f9890794c8b7dabe5ec2a6d42c242b53e294f06d0"
